@@ -12,6 +12,10 @@ function cambioDolar (){
 
 function cambioEuro (){
     let montoPesos = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+    if (montoPesos <= 0) {
+        alert("ingrese un monto válido")
+        return
+    }
     const valorEuro = 1294
     conversion = montoPesos / valorEuro
     alert(montoPesos + " pesos, es equivalente a " + conversion + " Euros")
@@ -19,6 +23,10 @@ function cambioEuro (){
 
 function cambioReal (){
     let montoPesos = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+    if (montoPesos <= 0) {
+        alert("ingrese un monto válido")
+        return
+    }
     const valorReal = 212
     conversion = montoPesos / valorReal
     alert(montoPesos + " pesos, es equivalente a " + conversion + " Reales")
