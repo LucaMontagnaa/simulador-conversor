@@ -1,54 +1,71 @@
+let historial = []
 
-function cambioDolar (){
-    let montoPesos = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+function cambioDolar(montoPesos) {
     if (montoPesos <= 0) {
-        alert("ingrese un monto válido")
-        return
+        alert("Por favor, ingresa un monto válido.");
+        return;
     }
-    const valorDolar = 1180
-    conversion = montoPesos / valorDolar
-    alert(montoPesos + " pesos, es equivalente a " + conversion + " USD")
+    const valorDolar = 1180;
+    let conversion = montoPesos / valorDolar;
+    historial.push(montoPesos + " pesos = " + conversion + " dólares");
+    alert(montoPesos + " pesos es equivalente a " + conversion + " USD");
 }
 
-function cambioEuro (){
-    let montoPesos = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+function cambioEuro (montoPesos){
     if (montoPesos <= 0) {
-        alert("ingrese un monto válido")
+        alert("Por favor, ingrese un monto válido")
         return
     }
     const valorEuro = 1294
     conversion = montoPesos / valorEuro
+    historial.push(montoPesos + " pesos = " + conversion + " Euros");
     alert(montoPesos + " pesos, es equivalente a " + conversion + " Euros")
 }
 
-function cambioReal (){
-    let montoPesos = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+function cambioReal (montoPesos){
     if (montoPesos <= 0) {
-        alert("ingrese un monto válido")
+        alert("Por favor, ingrese un monto válido")
         return
     }
     const valorReal = 212
     conversion = montoPesos / valorReal
+    historial.push(montoPesos + " pesos = " + conversion + " Reales");
     alert(montoPesos + " pesos, es equivalente a " + conversion + " Reales")
 }
 
+function mostrarHistorial() {
+    if (historial.length === 0) {
+        alert("No has hecho conversiones")
+    }
 
-let menu = parseInt(prompt("Bienvenido, ingresa una opción: \n 1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-salir"))
+    else {
+        alert("Historial de conversiones \n" + historial.join("\n"))
+    }
+}
 
-while (menu !== 4) {
-    switch (menu) {
-        case 1: 
-            cambioDolar()
-            break
+
+let menu = parseInt(prompt("Bienvenido, ingresa una opción: \n 1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-Historial \n 5-salir"))
+
+while (menu !== 5) {
+    switch (menu) { 
+        case 1:
+            let montoUsd = parseInt(prompt("Ingrese la cantidad de dinero a convertir"));
+            cambioDolar(montoUsd);
+            break;
         case 2: 
-            cambioEuro()
+            let montoEuro = parseInt(prompt("Ingrese la cantidad de dinero a convertir"))
+            cambioEuro(montoEuro)
             break
         case 3: 
-            cambioReal()
+            let montoReal = parseInt(prompt("Ingresa la cantidad de dinero a convertir"))
+            cambioReal(montoReal)
+            break
+        case 4: 
+            mostrarHistorial()
             break
         default:
             alert("Opción incorrecta")
     }
 
-    menu = parseInt(prompt("1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-salir"))
+    menu = parseInt(prompt("1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-Historial \n 5-salir"))
 }
