@@ -7,8 +7,8 @@ function cambioDolar(montoPesos) {
     }
     const valorDolar = 1180;
     let conversion = montoPesos / valorDolar;
-    historial.push(montoPesos + " pesos = " + conversion + " dólares");
-    alert(montoPesos + " pesos es equivalente a " + conversion + " USD");
+    historial.push(montoPesos + " pesos = " + conversion + " Dólares");
+    alert(montoPesos + " pesos, es equivalente a " + conversion + " USD");
 }
 
 function cambioEuro (montoPesos){
