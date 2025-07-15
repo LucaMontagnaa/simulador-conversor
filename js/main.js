@@ -43,7 +43,7 @@ function mostrarHistorial() {
     }
 }
 
-
+/*
 let menu = parseInt(prompt("Bienvenido, ingresa una opción: \n 1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-Historial \n 5-salir"))
 
 while (menu !== 5) {
@@ -68,4 +68,31 @@ while (menu !== 5) {
     }
 
     menu = parseInt(prompt("1-Convertir a USD \n 2-Convertir a Euro \n 3-Convertir a Real \n 4-Historial \n 5-salir"))
+}
+
+*/
+
+// 2DA ENTREGA, AGREGANDO DOM Y EVENTOS, FUNCIONES DE ORDEN SUPERIOR, ETC.
+
+let calcular = document.getElementById("calcular")
+let monto = document.getElementById("monto")
+let moneda = document.getElementById("moneda")
+
+calcular.onclick = () => {
+
+    if (monto.value === 0 || monto.value <= 0) {
+        let mensajeError = document.createElement("p")
+        mensajeError.innerText = ("Por favor ingrese un monto válido")
+        document.body.appendChild(mensajeError)
+    }
+
+    else {
+
+        let resultadoConversion = monto.value / moneda.value
+        console.log(resultadoConversion)
+        let printConversion = document.createElement("p")
+        printConversion.innerHTML = `${monto.value} es igual a ${resultadoConversion}`
+        document.body.appendChild(printConversion)
+
+    }
 }
