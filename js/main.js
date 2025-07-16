@@ -1,3 +1,4 @@
+/*
 let historial = []
 
 function cambioDolar(montoPesos) {
@@ -78,21 +79,65 @@ let calcular = document.getElementById("calcular")
 let monto = document.getElementById("monto")
 let moneda = document.getElementById("moneda")
 
+const monedas = {
+    1180: "Dolares",
+    1240: "Euros",
+    220: "Reales"
+}
+
+const historial = []
+
+
+
 calcular.onclick = () => {
 
     if (monto.value === 0 || monto.value <= 0) {
         let mensajeError = document.createElement("p")
         mensajeError.innerText = ("Por favor ingrese un monto válido")
         document.body.appendChild(mensajeError)
+        return
     }
 
     else {
 
         let resultadoConversion = monto.value / moneda.value
+        let nombreMoneda = monedas[moneda.value]
         console.log(resultadoConversion)
         let printConversion = document.createElement("p")
-        printConversion.innerHTML = `${monto.value} es igual a ${resultadoConversion}`
+        printConversion.innerHTML = `${monto.value} pesos es igual a ${resultadoConversion} ${nombreMoneda}`
         document.body.appendChild(printConversion)
+        
+        const conversiones = {
+            id: historial.length + 1 ,
+            monto: monto.value,
+            moneda: monedas[moneda.value],
+            resultado: resultadoConversion
+        }
 
+        historial.push(conversiones)
+
+        console.log(historial)
     }
 }
+
+let mostrarHistorial = document.getElementById("mostrarHistorial")
+
+mostrarHistorial.onclick = () => {
+    let HistorialContainer = document.getElementById("historialContainer")
+
+    if (!HistorialContainer) {
+        HistorialContainer = document.createElement("div")
+        HistorialContainer.id = ("historialContainer")
+        document.body.appendChild(HistorialContainer)
+    }
+
+    HistorialContainer.innerHTML = ""
+
+    historial.forEach(item => {
+        let printHistorial = document.createElement("p")
+        printHistorial.innerText = `${item.id}: ${item.monto} pesos = ${item.resultado} ${item.moneda}`
+        HistorialContainer.appendChild(printHistorial)
+
+    })
+}
+
