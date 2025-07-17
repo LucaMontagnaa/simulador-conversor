@@ -90,10 +90,9 @@ const historial = []
 
 
 calcular.onclick = () => {
+    let mensajeError = document.querySelector(".mensaje-error")
 
-    if (monto.value === 0 || monto.value <= 0 || monto.value === "") {
-
-        let mensajeError = document.querySelector(".mensaje-error")
+    if (monto.value <= 0 || monto.value === "") {
 
         if(!mensajeError) {
 
@@ -104,6 +103,10 @@ calcular.onclick = () => {
         }
 
         return
+    }
+
+    if (mensajeError) {
+        mensajeError.remove()
     }
 
     let resultadoConversion = monto.value / moneda.value
@@ -128,6 +131,14 @@ calcular.onclick = () => {
     }
 
     historial.push(conversiones)
+
+    let HistorialContainer = document.querySelector(".historialContainer") 
+
+    if (HistorialContainer) {
+        HistorialContainer.remove()
+    }
+
+    
     
 }
 
@@ -139,10 +150,15 @@ mostrarHistorial.onclick = () => {
     if (!HistorialContainer) {
         HistorialContainer = document.createElement("div")
         HistorialContainer.className = "historialContainer"
+        HistorialContainer.innerHTML = ("<h2>Historial</h2>")
         document.body.appendChild(HistorialContainer)
     }
 
     HistorialContainer.innerHTML = ""
+
+    let historialTitulo = document.createElement("h2")
+    historialTitulo.innerText = "Historial"
+    HistorialContainer.appendChild(historialTitulo)
 
     historial.forEach(item => {
         let printHistorial = document.createElement("p")
@@ -150,5 +166,31 @@ mostrarHistorial.onclick = () => {
         HistorialContainer.appendChild(printHistorial)
 
     })
+
+    let btnCerrarHistorial = document.querySelector(".btnCerrarHistorial")
+    let btnBorrarHistorial = document.querySelector(".btnBorrarHistorial")
+
+    if (!btnCerrarHistorial) {
+        btnCerrarHistorial = document.createElement("button")
+        btnCerrarHistorial.className = "btnCerrarHistorial"
+        btnCerrarHistorial.innerText= "Cerrar Historial"
+        HistorialContainer.appendChild(btnCerrarHistorial)
+
+        btnCerrarHistorial.onclick = () => {
+            HistorialContainer.remove()
+        }
+    }
+
+    if (!btnBorrarHistorial) {
+        btnBorrarHistorial = document.createElement("button")
+        btnBorrarHistorial.className = "btnBorrarHistorial"
+        btnBorrarHistorial.innerText = "Borrar Historial"
+        HistorialContainer.appendChild(btnBorrarHistorial)
+
+        btnBorrarHistorial.onclick = () => {
+            HistorialContainer.remove()
+            historial.length = 0
+        }
+    }
 }
 
