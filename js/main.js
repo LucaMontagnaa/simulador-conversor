@@ -85,7 +85,7 @@ const monedas = {
     220: "Reales"
 }
 
-const historial = []
+let historial = JSON.parse(localStorage.getItem("historial")) || []
 
 
 
@@ -131,6 +131,8 @@ calcular.onclick = () => {
     }
 
     historial.push(conversiones)
+    localStorage.setItem("historial", JSON.stringify(historial))
+
 
     let HistorialContainer = document.querySelector(".historialContainer") 
 
@@ -190,6 +192,7 @@ mostrarHistorial.onclick = () => {
         btnBorrarHistorial.onclick = () => {
             HistorialContainer.remove()
             historial.length = 0
+            localStorage.removeItem("historial")
         }
     }
 }
