@@ -91,43 +91,54 @@ const historial = []
 
 calcular.onclick = () => {
 
-    if (monto.value === 0 || monto.value <= 0) {
-        let mensajeError = document.createElement("p")
-        mensajeError.innerText = ("Por favor ingrese un monto válido")
-        document.body.appendChild(mensajeError)
+    if (monto.value === 0 || monto.value <= 0 || monto.value === "") {
+
+        let mensajeError = document.querySelector(".mensaje-error")
+
+        if(!mensajeError) {
+
+            mensajeError = document.createElement("p")
+            mensajeError.className = "mensaje-error"
+            mensajeError.innerText = ("Por favor ingrese un monto válido")
+            document.body.appendChild(mensajeError)
+        }
+
         return
     }
 
-    else {
+    let resultadoConversion = monto.value / moneda.value
+    let nombreMoneda = monedas[moneda.value]
 
-        let resultadoConversion = monto.value / moneda.value
-        let nombreMoneda = monedas[moneda.value]
-        console.log(resultadoConversion)
-        let printConversion = document.createElement("p")
-        printConversion.innerHTML = `${monto.value} pesos es igual a ${resultadoConversion} ${nombreMoneda}`
+    let printConversion = document.querySelector(".mensaje-conversion")
+
+    if (!printConversion) {
+        printConversion = document.createElement("p")
+        printConversion.className = "mensaje-conversion"
         document.body.appendChild(printConversion)
-        
-        const conversiones = {
-            id: historial.length + 1 ,
-            monto: monto.value,
-            moneda: monedas[moneda.value],
-            resultado: resultadoConversion
-        }
-
-        historial.push(conversiones)
-
-        console.log(historial)
     }
+
+    printConversion.innerHTML = `${monto.value} pesos es igual a ${resultadoConversion} ${nombreMoneda}`
+
+    
+    const conversiones = {
+        id: historial.length + 1 ,
+        monto: monto.value,
+        moneda: monedas[moneda.value],
+        resultado: resultadoConversion
+    }
+
+    historial.push(conversiones)
+    
 }
 
 let mostrarHistorial = document.getElementById("mostrarHistorial")
 
 mostrarHistorial.onclick = () => {
-    let HistorialContainer = document.getElementById("historialContainer")
+    let HistorialContainer = document.querySelector(".historialContainer")
 
     if (!HistorialContainer) {
         HistorialContainer = document.createElement("div")
-        HistorialContainer.id = ("historialContainer")
+        HistorialContainer.className = "historialContainer"
         document.body.appendChild(HistorialContainer)
     }
 
