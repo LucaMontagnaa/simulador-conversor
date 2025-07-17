@@ -148,11 +148,16 @@ let mostrarHistorial = document.getElementById("mostrarHistorial")
 
 mostrarHistorial.onclick = () => {
     let HistorialContainer = document.querySelector(".historialContainer")
+    let printConversion = document.querySelector(".mensaje-conversion")
+
+    if (printConversion) {
+        printConversion.remove()
+    }
+
 
     if (!HistorialContainer) {
         HistorialContainer = document.createElement("div")
         HistorialContainer.className = "historialContainer"
-        HistorialContainer.innerHTML = ("<h2>Historial</h2>")
         document.body.appendChild(HistorialContainer)
     }
 
@@ -161,6 +166,12 @@ mostrarHistorial.onclick = () => {
     let historialTitulo = document.createElement("h2")
     historialTitulo.innerText = "Historial"
     HistorialContainer.appendChild(historialTitulo)
+
+    if (historial.length === 0) {
+        let mensajeHistorialVacio = document.createElement("p")
+        mensajeHistorialVacio.innerText = "Aún no hay conversiones"
+        HistorialContainer.appendChild(mensajeHistorialVacio)
+    }
 
     historial.forEach(item => {
         let printHistorial = document.createElement("p")
