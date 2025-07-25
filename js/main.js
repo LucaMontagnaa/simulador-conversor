@@ -75,6 +75,14 @@ while (menu !== 5) {
 
 // 2DA ENTREGA, AGREGANDO DOM Y EVENTOS, FUNCIONES DE ORDEN SUPERIOR, ETC.
 
+let saldos = [
+    { moneda: "dolares", monto: 0 },
+    { moneda: "euros", monto: 0 },
+    { moneda: "reales", monto: 0 },
+    { moneda: "pesos", monto: 0 }
+]
+
+
 let calcular = document.getElementById("calcular")
 let monto = document.getElementById("monto")
 let moneda = document.getElementById("moneda")
@@ -87,6 +95,8 @@ const monedas = {
 
 let historial = JSON.parse(localStorage.getItem("historial")) || []
 
+let saldoActual = document.querySelector(".saldo-actual")
+saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
 
 
 calcular.onclick = () => {
