@@ -75,11 +75,11 @@ while (menu !== 5) {
 
 // 2DA ENTREGA, AGREGANDO DOM Y EVENTOS, FUNCIONES DE ORDEN SUPERIOR, ETC.
 
-let saldos = [
-    { moneda: "dolares", monto: 0 },
-    { moneda: "euros", monto: 0 },
-    { moneda: "reales", monto: 0 },
-    { moneda: "pesos", monto: 0 }
+let saldos = JSON.parse(localStorage.getItem("saldos")) || [
+    { moneda: "Dolares", monto: 0 },
+    { moneda: "Euros", monto: 0 },
+    { moneda: "Reales", monto: 0 },
+    { moneda: "Pesos", monto: 50000 }
 ]
 
 
@@ -98,6 +98,7 @@ let historial = JSON.parse(localStorage.getItem("historial")) || []
 let saldoActual = document.querySelector(".saldo-actual")
 saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
 
+// CONVERSIÓN
 
 calcular.onclick = () => {
     let mensajeError = document.querySelector(".mensaje-error")
@@ -119,8 +120,29 @@ calcular.onclick = () => {
         mensajeError.remove()
     }
 
+    let saldoPesos = saldos.find(sal => sal.moneda === "Pesos")
+
+    if (monto.value > saldoPesos.monto) {
+        if (!mensajeError) {
+            mensajeError = document.createElement("p")
+            mensajeError.className = "mensaje-error"
+            document.body.appendChild(mensajeError)
+        }
+
+        mensajeError.innerText = "Saldo insuficiente para realizar conversión"
+        return
+    }
+
     let resultadoConversion = monto.value / moneda.value
+    resultadoConversion = parseFloat(resultadoConversion.toFixed(1))
     let nombreMoneda = monedas[moneda.value]
+
+    let saldoDestino = saldos.find(sal => sal.moneda === nombreMoneda)
+    saldoPesos.monto -= parseInt(monto.value)
+    saldoDestino.monto += resultadoConversion
+    localStorage.setItem("saldos", JSON.stringify(saldos))
+    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
+
 
     let printConversion = document.querySelector(".mensaje-conversion")
 
@@ -153,6 +175,8 @@ calcular.onclick = () => {
     
     
 }
+
+//HISTORIAL
 
 let mostrarHistorial = document.getElementById("mostrarHistorial")
 
@@ -216,5 +240,26 @@ mostrarHistorial.onclick = () => {
             localStorage.removeItem("historial")
         }
     }
+}
+
+//TRANSFERENCIAS
+
+const montoTransferencia = document.getElementById("montoTransferencia")
+const monedaTransferencia = document.getElementById("monedasTransferencia")
+const usuarioTransferencia = document.getElementById("usuarios")
+const btnTransferir = document.getElementById("transferir")
+
+btnTransferir.onclick = () => {
+    let monto = parseFloat(montoTransferencia.value)
+    let moneda = monedaTransferencia.value
+    let usuario = usuarioTransferencia.value
+
+    let mensajeError = document.getElementById("mensaje-error-transferencia")
+
+    let mensajeErrorDiv = document.createElement("div")
+    mensajeErrorDiv.className = "mensaje-error-container"
+    mensajeError.innerHTML = `<p id="mensaje-error-transferencia"></p>`
+
+    
 }
 
