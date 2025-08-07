@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <!-- JS -->
-     
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script defer src="./js/usuarios.js"></script>
+    <script defer src="./js/main.js"></script>
     <title>Conversor de moneda</title>
 </head>
 <body>
@@ -13,23 +17,25 @@
     <p class="saldo-actual"></p>
 
     <h2>TRANSFERENCIAS</h2>
-    <form action="">
-        <label for="">Transferir dinero</label>
-        <input type="number" id="montoTransferencia" placeholder="Ingrese el monto">
-        <select id="monedasTransferencia">
-            <option value="pesos">Pesos</option>
-            <option value="dolares">Dolares</option>
-            <option value="euros">Euros</option>
-            <option value="reales">Reales</option>
-        </select>
-        <select id="usuarios">
-            <option value="usuario1">Juan</option>
-            <option value="usuario2">Ariel</option>
-            <option value="usuario3">Matias</option>
-        </select>
-        <button type="button" id="transferir">Transferir</button>
-        
-    </form>
+    <div id="transferencia-container">
+        <form action="" id="form-transferencia">
+            <label for="montoTransferencia">Transferir dinero</label>
+            <input type="number" id="montoTransferencia" placeholder="Ingrese el monto">
+            <select id="monedasTransferencia">
+                <option value="pesos">Pesos</option>
+                <option value="dolares">Dolares</option>
+                <option value="euros">Euros</option>
+                <option value="reales">Reales</option>
+            </select>
+            <select id="usuarios">
+                <option value="usuario1">Juan</option>
+                <option value="usuario2">Ariel</option>
+                <option value="usuario3">Matias</option>
+            </select>
+            <button type="button" id="transferir">Transferir</button>
+            
+        </form>
+    </div>
     <h2>CONVERSOR DE MONEDA</h2>
     <form action="">
         <input type="number" id="monto" placeholder="Ingrese el monto">
@@ -42,6 +48,6 @@
         <button type="button" id="mostrarHistorial">Historial</button>
     </form>
 
-    <script defer src="./js/main.js"></script>
+    
 </body>
 </html>
