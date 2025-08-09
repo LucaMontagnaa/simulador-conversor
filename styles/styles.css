@@ -3,6 +3,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #ddd;
 }
 
 form {
@@ -10,8 +11,26 @@ form {
     gap: 20px;
 }
 
+input {
+    background-color: transparent;
+    border-color: #c7a417;
+    padding: 5px;
+}
+
+button {
+    padding: 5px;
+}
+
+h1,h2,h3,h4 {
+    color:#c7a417 ;
+}
+
 h2 {
     margin-top: 50px;
+}
+
+h4 {
+    text-align: center;
 }
 
 .btnBorrarHistorial, .btnCerrarHistorial{

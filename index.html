@@ -14,7 +14,14 @@
 </head>
 <body>
     <h1>BILLETERA VIRTUAL</h1>
+    <p id="cotizaciones"></p>
     <p class="saldo-actual"></p>
+
+    <div id="ingresarDineroContainer">
+        <h4>INGRESAR PESOS</h4>
+        <input type="number" id="montoAgregarPesos" placeholder="Monto a ingresar">
+        <button id="btnAgregarPesos">Agregar Pesos</button>
+    </div>
 
     <h2>TRANSFERENCIAS</h2>
     <div id="transferencia-container">
@@ -40,9 +47,9 @@
     <form action="">
         <input type="number" id="monto" placeholder="Ingrese el monto">
         <select id="moneda">
-            <option id="dolar" value="1180">Dólar</option>
-            <option value="1240">Euro</option>
-            <option value="220">Real</option>
+            <option id="dolar" value="1180">Dolares</option>
+            <option value="1240">Euros</option>
+            <option value="220">Reales</option>
         </select>
         <button type="button" id="calcular">Convertir</button>
         <button type="button" id="mostrarHistorial">Historial</button>

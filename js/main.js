@@ -77,17 +77,63 @@ while (menu !== 5) {
 
 let monedas = {}
 
-fetch('./db/cotizaciones.json')
-    .then(response => response.json())
-    .then(data => {
-    monedas = data
-    console.log(monedas)
-    actualizarSaldoUI()
-    
-    })
-    .catch(error => {
-    mostrarMensaje("Error cargando cotizaciones", "error")
-    })
+function actualizarSaldoUI() {
+    let saldoActual = document.querySelector(".saldo-actual")
+    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
+}
+
+function mostrarMensaje(texto, tipo = "info") {
+    Toastify({
+        text: texto,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        style: {
+            background: tipo === "error" ? "#e74c3c" : "#27ae60"
+        },
+        close: true
+    }).showToast()
+}
+
+function MonstrarCotizaciones() {
+    const cotizacionesContainer = document.getElementById("cotizaciones")
+
+    if (!cotizacionesContainer) {
+        return
+    }
+
+    let textoCotizaciones = ""
+
+    for (const moneda in monedas) {
+        const valor = monedas[moneda]
+        textoCotizaciones += `${moneda}: ${valor} | ` 
+    }
+
+    cotizacionesContainer.textContent = `Cotizaciones: ${textoCotizaciones}`
+
+}
+
+async function cargarCotizaciones() {
+    try {
+        const response = await fetch('./db/cotizaciones.json')
+
+        if (!response.ok) {
+            throw new Error("Error al obtener cotizaciones")
+        }
+
+        monedas = await response.json()
+        actualizarSaldoUI()
+        MonstrarCotizaciones()
+
+    } catch (error) {
+        mostrarMensaje("Error cargando cotizaciones", "error")
+        console.error(error)
+    } finally {
+        console.log("Fetch de cotizaciones finalizado")
+    }
+}
+
+cargarCotizaciones()
 
 
 
@@ -107,76 +153,74 @@ let moneda = document.getElementById("moneda")
 
 let historial = JSON.parse(localStorage.getItem("historial")) || []
 
-function actualizarSaldoUI() {
-    let saldoActual = document.querySelector(".saldo-actual")
-    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
-}
-actualizarSaldoUI()
-
-function mostrarMensaje(texto, tipo = "info") {
-    Toastify({
-        text: texto,
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        style: {
-            background: tipo === "error" ? "#e74c3c" : "#27ae60"
-        },
-        close: true
-    }).showToast()
-}
-
 
 let saldoPesos = saldos.find(sal => sal.moneda === "Pesos")
 let saldoDolar = saldos.find(sal => sal.moneda === "Dolares")
 let saldoEuros = saldos.find(sal => sal.moneda === "Euros")
 let saldoReales = saldos.find(sal => sal.moneda === "Reales")
 
+// INGRESAR PESOS
+
+const inputAgregarPesos = document.getElementById("montoAgregarPesos")
+const btnAgregarPesos = document.getElementById("btnAgregarPesos")
+
+btnAgregarPesos.onclick = () => {
+    let montoAgregar = parseFloat(inputAgregarPesos.value)
+    if (isNaN(montoAgregar) || montoAgregar <= 0) {
+        mostrarMensaje("Ingrese un monto válido para agregar", "error")
+        return
+    }
+
+    let saldoPesos = saldos.find(sal => sal.moneda === "Pesos")
+    saldoPesos.monto += montoAgregar
+
+    localStorage.setItem("saldos", JSON.stringify(saldos))
+    actualizarSaldoUI()
+    mostrarMensaje(`Se agregaron ${montoAgregar} pesos a tu saldo`, "success")
+
+    inputAgregarPesos.value = ""
+}
+
+
+
+
+
 // CONVERSIÓN
 
 calcular.onclick = () => {
-    let mensajeError = document.querySelector(".mensaje-error")
 
-    if (monto.value <= 0 || monto.value === "") {
+    let montoIngresado = parseFloat(monto.value)
+
+    if (montoIngresado <= 0 || isNaN(montoIngresado)) {
 
         mostrarMensaje("Por favor, ingrese un monto válido", "error")
         return
     }
 
 
-    if (parseFloat(monto.value) > saldoPesos.monto) {
+    if (montoIngresado > saldoPesos.monto) {
         mostrarMensaje("Saldo insuficiente para realizar conversión", "error")
         return
     }
 
     let resultadoConversion = monto.value / moneda.value
     resultadoConversion = parseFloat(resultadoConversion.toFixed(1))
-    let nombreMoneda = moneda.value
-    let cotizacion = monedas[nombreMoneda]
-
+    let nombreMoneda = moneda.options[moneda.selectedIndex].text
+    
 
     let saldoDestino = saldos.find(sal => sal.moneda === nombreMoneda)
     saldoPesos.monto -= parseInt(monto.value)
     saldoDestino.monto += resultadoConversion
+
     localStorage.setItem("saldos", JSON.stringify(saldos))
-    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
+    actualizarSaldoUI()
 
+    mostrarMensaje(`${monto.value} pesos es igual a ${resultadoConversion} ${nombreMoneda}`, "success")
 
-    let printConversion = document.querySelector(".mensaje-conversion")
-
-    if (!printConversion) {
-        printConversion = document.createElement("p")
-        printConversion.className = "mensaje-conversion"
-        document.body.appendChild(printConversion)
-    }
-
-    printConversion.innerHTML = `${monto.value} pesos es igual a ${resultadoConversion} ${nombreMoneda}`
-
-    
     const conversiones = {
         id: historial.length + 1 ,
         monto: monto.value,
-        moneda: monedas[moneda.value],
+        moneda: nombreMoneda,
         resultado: resultadoConversion
     }
 
@@ -190,7 +234,7 @@ calcular.onclick = () => {
         HistorialContainer.remove()
     }
 
-    
+    monto.value = ""
     
 }
 
@@ -199,6 +243,7 @@ calcular.onclick = () => {
 let mostrarHistorial = document.getElementById("mostrarHistorial")
 
 mostrarHistorial.onclick = () => {
+
     let HistorialContainer = document.querySelector(".historialContainer")
     let printConversion = document.querySelector(".mensaje-conversion")
 
@@ -294,8 +339,16 @@ btnTransferir.onclick = () => {
     saldoActualMoneda.monto -= monto
     mostrarMensaje(`Transferencia de ${monto} ${moneda} a ${usuarioDestino.nombre} realizada con éxito`, "success")
     console.log(saldoActualMoneda)
-    
 
+    const saldoUsuarioDestino = usuarioDestino.saldos.find(sal => sal.moneda.toLowerCase() === moneda.toLowerCase())
+    saldoUsuarioDestino.monto += monto
+
+    localStorage.setItem("saldos", JSON.stringify(saldos))
+    localStorage.setItem("usuarios", JSON.stringify(usuarios))
+
+    actualizarSaldoUI()
+
+    montoTransferencia.value = ""
     
 }
 
