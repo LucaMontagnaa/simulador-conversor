@@ -79,7 +79,7 @@ let monedas = {}
 
 function actualizarSaldoUI() {
     let saldoActual = document.querySelector(".saldo-actual")
-    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${s.monto} ${s.moneda}`).join(", ")}`
+    saldoActual.innerText = `Tu saldo es de ${saldos.map(s => `${parseFloat(s.monto.toFixed(2))} ${s.moneda}`).join(", ")}`
 }
 
 function mostrarMensaje(texto, tipo = "info") {
